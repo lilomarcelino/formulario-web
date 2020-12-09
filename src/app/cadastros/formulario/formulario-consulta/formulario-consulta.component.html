@@ -1,0 +1,81 @@
+<app-titulo [tituloPagina]="'Consulta Formulario'"> </app-titulo>
+
+<form class="form">
+  <div class="row">
+    <div class="col-12 col-md-12 col-lg-8 col-xl-8">
+      <div class="form-group">
+        <label for="nome"></label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          name="nome"
+          id="nome"
+          placeholder="Nome Fase"
+          [(ngModel)]="formularioFiltro.nome"
+        />
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-2 col-xl-2">
+      <div class="form-group">
+        <label for="buscar"></label>
+        <button
+          type="submit"
+          name="buscar"
+          id="buscar"
+          class="btn btn-info btn-sm btn-block"
+          (click)="buscar()"
+        >
+          <i class="fas fa-search"></i> Buscar
+        </button>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-2 col-xl-2">
+      <div class="form-group">
+        <label for="cadastro"></label>
+        <button
+          type="button"
+          name="cadastro"
+          id="cadastro"
+          class="btn btn-secondary btn-sm btn-block"
+          title="Cadastrar Fase"
+          (click)="cadastrar()"
+        >
+          <i class="fas fa-plus"></i> Novo
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="row">
+  <app-card
+    class="w-100"
+    [textoPadrao]="'Fomrulario(s)'"
+    [mostrarCabecalho]="true"
+    *ngIf="formularios"
+  >
+    <app-formulario-lista
+      [formularios]="formularios"
+      [config]="config"
+      (buscarEmitter)="buscar()"
+      *ngIf="temFormularios()"
+    ></app-formulario-lista>
+
+    <div class="row" *ngIf="!temFormularios()">
+      <div class="col-12 text-center">
+        <br /><br />
+        <p *ngIf="!utilService.carregando">
+          {{ utilService.retornaMensagemPadrao() }}
+        </p>
+        <br /><br />
+      </div>
+    </div>
+  </app-card>
+</div>
+
+<app-paginacao
+  [(config)]="config"
+  [moverScroll]="false"
+  (pageChange)="buscar()"
+>
+</app-paginacao>

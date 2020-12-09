@@ -1,0 +1,244 @@
+<app-titulo [tituloPagina]="'Formulario(s) Para Responder'"> </app-titulo>
+<app-card class="w-100">
+  <div class="row" *ngIf="temFormularios()">
+    <div
+      class="col-6"
+      *ngFor="let formulario of formularios | paginate: config"
+    >
+      <div class="callout callout-info">
+        <h5>{{ formulario.nome }}</h5>
+
+        <p class="text-truncate">
+          {{ formulario.descricao }}
+        </p>
+
+        <div class="col-12 col-md-12 col-lg-4 col-xl-4 pl-0">
+          <button
+            type="button"
+            name="responder"
+            id="responder"
+            class="btn btn-info btn-sm btn-block"
+            (click)="responderPergunta(formulario)"
+          >
+            Responder
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" *ngIf="!temFormularios()">
+    <div class="col-12 text-center">
+      <br /><br />
+      <p *ngIf="!utilService.carregando">
+        {{ utilService.retornaMensagemPadrao() }}
+      </p>
+      <br /><br />
+    </div>
+  </div>
+</app-card>
+
+<app-paginacao
+  [(config)]="config"
+  [moverScroll]="false"
+  (pageChange)="buscar()"
+>
+</app-paginacao>
+
+<div
+  class="modal fade"
+  id="modal-resposta"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Responder Perguntas</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid" *ngIf="formulario">
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label for="nome">Nome</label>
+                <input
+                  type="text"
+                  name="nome"
+                  id="nome"
+                  class="form-control form-control-sm"
+                  [ngModel]="formulario.nome"
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea
+                  class="form-control form-control-sm"
+                  name="descricao"
+                  id="descricao"
+                  rows="5"
+                  [ngModel]="formulario.descricao"
+                  disabled
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <strong><i class="fa fa-question mr-1"></i>Perguntas</strong>
+              <hr />
+            </div>
+          </div>
+          <div class="row">
+            <app-card class="w-100">
+              <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                <table class="table table-hover table-sm">
+                  <thead>
+                    <tr>
+                      <th class="text-left">Pergunta</th>
+                      <th class="text-center">Opções</th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    *ngFor="let pergunta of formulario.perguntas; let i = index"
+                  >
+                    <tr>
+                      <td class="text-left">{{ pergunta.descricao }}</td>
+                      <td class="text-center">
+                        <button
+                          type="button"
+                          class="btn btn-link text-secondary p-0"
+                          title="Responder"
+                          data-toggle="collapse"
+                          [attr.data-target]="'#' + 'collapsePergunta' + i"
+                          aria-expanded="false"
+                          aria-controls="collapseExample"
+                        >
+                          <i class="fa fa-edit" aria-hidden="true"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="hidden">
+                        <div
+                          class="accordian-body collapse"
+                          id="collapsePergunta{{ i }}"
+                        >
+                          <div
+                            class="row p-2"
+                            *ngIf="pergunta.tipo == 'SIMPLES'"
+                          >
+                            <div class="col-12">
+                              <div class="form-group">
+                                <label for="respota">Resposta</label>
+                                <textarea
+                                  class="form-control"
+                                  name="resposta-{{ i }}"
+                                  rows="3"
+                                  maxlength="150"
+                                  [(ngModel)]="pergunta.resposta"
+                                  [disabled]="temRespostaInserida(pergunta)"
+                                ></textarea>
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-2 col-xl-2">
+                              <button
+                                type="button"
+                                name="responder"
+                                id="responder"
+                                class="btn btn-success btn-sm btn-block"
+                                (click)="responderSimples(pergunta)"
+                              >
+                                Responder
+                              </button>
+                            </div>
+                          </div>
+                          <div
+                            class="row p-2"
+                            *ngIf="pergunta.tipo == 'MULTIPLA'"
+                          >
+                            <div class="col-12">
+                              <div class="form-group">
+                                <label for="alternativas">Alternativa(s)</label>
+                                <ul
+                                  *ngFor="
+                                    let alternativa of pergunta.alternativas
+                                  "
+                                >
+                                  <li
+                                    class="d-flex justify-content-between p-2"
+                                    [ngClass]="{
+                                      'text-primary font-weight-bold': temRespostaInserida(
+                                        pergunta,
+                                        alternativa.nome
+                                      )
+                                    }"
+                                  >
+                                    {{ alternativa.descricao }}
+
+                                    <input
+                                      type="radio"
+                                      [name]="alternativa.nome"
+                                      [checked]="
+                                        temRespostaInserida(
+                                          pergunta,
+                                          alternativa.nome
+                                        )
+                                      "
+                                      (click)="
+                                        responderAlternativa(
+                                          alternativa,
+                                          pergunta
+                                        )
+                                      "
+                                    />
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </app-card>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="fecharModal()"
+          >
+            Fechar
+            <i class="fas fa-times"></i>
+          </button>
+          <button
+            type="button"
+            class="btn btn-success"
+            (click)="salvarRespostas()"
+          >
+            Confirmar Resposta
+            <i class="fas fa-save"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+<div class="wrapper">
+  <app-header></app-header>
+  <app-sidebar></app-sidebar>
+  <div [ngClass]="{ 'content-wrapper': authService.isLoggedIn() }">
+    <section [ngClass]="{ content: authService.isLoggedIn() }">
+      <app-main></app-main>
+    </section>
+  </div>
+  <app-footer></app-footer>
+</div>

@@ -1,0 +1,82 @@
+<app-titulo [tituloPagina]="'Consulta Usuario'"> </app-titulo>
+
+<form class="form">
+  <div class="row">
+    <div class="col-12 col-md-12 col-lg-8 col-xl-8">
+      <div class="form-group">
+        <label for="nome"></label>
+        <input
+          type="text"
+          class="form-control form-control-sm"
+          name="nome"
+          id="nome"
+          placeholder="Nome Usuario"
+          [(ngModel)]="usuarioFiltro.nome"
+        />
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-2 col-xl-2">
+      <div class="form-group">
+        <label for="buscar"></label>
+        <button
+          type="submit"
+          name="buscar"
+          id="buscar"
+          class="btn btn-info btn-sm btn-block"
+          (click)="buscar()"
+        >
+          <i class="fas fa-search"></i> Buscar
+        </button>
+      </div>
+    </div>
+    <div class="col-12 col-md-6 col-lg-2 col-xl-2">
+      <div class="form-group">
+        <label for="cadastro"></label>
+        <button
+          type="button"
+          name="cadastro"
+          id="cadastro"
+          class="btn btn-secondary btn-sm btn-block"
+          title="Cadastrar Usuario"
+          (click)="cadastrar()"
+        >
+          <i class="fas fa-plus"></i> Novo
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="row">
+  <app-card
+    class="w-100"
+    [textoPadrao]="'Usuario(s)'"
+    [mostrarCabecalho]="true"
+    *ngIf="usuarios"
+  >
+    <app-usuario-lista
+      [usuarios]="usuarios"
+      [config]="config"
+      (buscarEmitter)="buscar()"
+      *ngIf="temUsuarios()"
+    ></app-usuario-lista>
+
+    <div class="row" *ngIf="!temUsuarios()">
+      <div class="col-12 text-center">
+        <br /><br />
+        <p *ngIf="!utilService.carregando">
+          {{ utilService.retornaMensagemPadrao() }}
+        </p>
+        <br /><br />
+      </div>
+    </div>
+  </app-card>
+</div>
+
+<app-paginacao
+  [(config)]="config"
+  [moverScroll]="false"
+  [moverScroll]="false"
+  (pageChange)="buscar()"
+>
+</app-paginacao>

@@ -1,0 +1,47 @@
+@import "../node_modules/@fortawesome/fontawesome-free/css/all.min.css";
+/* @import "../node_modules/viewerjs/dist/viewer.css"; */
+
+.required::after {
+  color: #dc3545;
+  content: "*";
+  position: absolute;
+  margin-left: 5px;
+}
+
+.select2 {
+  width: 100% !important;
+}
+
+.select2-container .select2-selection--single {
+  height: calc(1.8125rem + 2px) !important;
+}
+
+.select2-container--bootstrap4
+  .select2-selection--single
+  .select2-selection__rendered {
+  line-height: 2 !important;
+}
+
+.select2-container--default
+  .select2-selection--single
+  .select2-selection__arrow {
+  height: calc(1.8125rem + 2px) !important;
+}
+
+.select2-container--bootstrap4 .select2-selection__clear {
+  margin-top: 0.4em !important;
+}
+
+.min-h155 {
+  min-height: 155px !important;
+}
+
+.card-header {
+  padding: 0.25rem 0.75rem !important;
+}
+
+.hidden {
+  border: none !important;
+  padding: 0 4px !important;
+  font-size: 14px;
+}

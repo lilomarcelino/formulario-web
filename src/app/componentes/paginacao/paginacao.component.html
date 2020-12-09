@@ -1,0 +1,58 @@
+<div
+  class="d-flex flex-column flex-sm-row flex-md-row flex-lg-row flex-xl-row justify-content-between"
+  *ngIf="config.totalItems > config.itemsPerPage"
+>
+  <nav>
+    <ul class="pagination justify-content-center">
+      <li>
+        <select
+          class="form-control text-secondary"
+          [(ngModel)]="config.itemsPerPage"
+          name="itensPorPagina"
+          (change)="p.setCurrent(1)"
+        >
+          <option
+            [ngValue]="6"
+            *ngIf="pegaItensPorPagina() === 6 || config.itemsPerPage === 6"
+            >6</option
+          >
+          <option [ngValue]="10">10</option>
+          <option [ngValue]="20">20</option>
+          <option [ngValue]="50">50</option>
+          <option [ngValue]="100">100</option>
+        </select>
+      </li>
+    </ul>
+  </nav>
+
+  <div
+    pagination-template
+    #p="paginationApi"
+    [id]="config.id"
+    [maxSize]="maxSize"
+    (pageChange)="pageChanged($event)"
+  >
+    <nav>
+      <ul class="pagination justify-content-center cursor-pointer">
+        <li class="page-item" *ngIf="!p.isFirstPage()">
+          <a class="page-link" (click)="p.previous()">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+          </a>
+        </li>
+        <li
+          *ngFor="let page of p.pages"
+          class="page-item"
+          [class.active]="p.getCurrent() === page.value"
+          (click)="p.setCurrent(page.value)"
+        >
+          <a class="page-link">{{ page.value }}</a>
+        </li>
+        <li class="page-item" *ngIf="!p.isLastPage()">
+          <a class="page-link" (click)="p.next()">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

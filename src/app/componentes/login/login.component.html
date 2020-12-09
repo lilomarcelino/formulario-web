@@ -1,0 +1,101 @@
+<div class="hold-transition login-page">
+  <div class="login-box">
+    <div class="login-logo"><b>Fomulário</b>Unibave</div>
+    <div class="card">
+      <div class="card-body login-card-body">
+        <p class="login-box-msg text-md">
+          Faça o login para iniciar sua sessão
+        </p>
+        <form name="formLogin" novalidate #formLogin="ngForm" *ngIf="login">
+          <div class="form-group">
+            <label
+              for="login"
+              class="required"
+              [class.text-danger]="
+                !iptLogin.valid &&
+                (iptLogin.dirty || iptLogin.touched || logando)
+              "
+              >Usuario</label
+            >
+
+            <div class="input-group mb-3">
+              <input
+                type="text"
+                class="form-control"
+                [class.is-invalid]="
+                  !iptLogin.valid &&
+                  (iptLogin.dirty || iptLogin.touched || logando)
+                "
+                id="login"
+                name="login"
+                [(ngModel)]="login.login"
+                #iptLogin="ngModel"
+                required
+              />
+              <div class="input-group-append">
+                <div
+                  class="input-group-text"
+                  [class.text-danger]="
+                    !iptLogin.valid &&
+                    (iptLogin.dirty || iptLogin.touched || logando)
+                  "
+                >
+                  <span class="fas fa-envelope"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label
+              for="senha"
+              class="required"
+              [class.text-danger]="
+                !iptSenha.valid &&
+                (iptSenha.dirty || iptSenha.touched || logando)
+              "
+              >Senha</label
+            >
+            <div class="input-group mb-3">
+              <input
+                type="password"
+                class="form-control"
+                [class.is-invalid]="
+                  !iptSenha.valid &&
+                  (iptSenha.dirty || iptSenha.touched || logando)
+                "
+                id="senha"
+                name="senha"
+                [(ngModel)]="login.senha"
+                #iptSenha="ngModel"
+                required
+              />
+              <div class="input-group-append">
+                <div
+                  class="input-group-text"
+                  [class.text-danger]="
+                    !iptSenha.valid &&
+                    (iptSenha.dirty || iptSenha.touched || logando)
+                  "
+                >
+                  <span class="fas fa-lock"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <button
+                type="submit"
+                class="btn btn-primary btn-block"
+                (click)="logar(login)"
+              >
+                Logar
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

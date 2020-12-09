@@ -1,0 +1,21 @@
+<div class="col-12 mt-3">
+  <div class="card card-height card-secondary card-outline card-tabs shadow">
+    <div *ngIf="mostrarCabecalho" class="card-header">
+      <div class="mr-auto p-0">
+        <h6>{{ textoPadrao }}</h6>
+      </div>
+    </div>
+    <div class="card-body min-h155">
+      <ng-content></ng-content>
+      <ngx-spinner
+        name="spinner-geral"
+        [fullScreen]="false"
+        type="ball-spin-clockwise"
+        size="medium"
+        bdColor="rgba(255,0,0,0)"
+        color="#6c757d"
+      >
+      </ngx-spinner>
+    </div>
+  </div>
+</div>

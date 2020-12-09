@@ -1,0 +1,29 @@
+<div class="table-responsive">
+  <table class="table table-striped table-sm">
+    <thead>
+      <th class="text-left">Código</th>
+      <th class="text-left">Nome</th>
+      <th class="text-center">Opções</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let curso of cursos | paginate: config">
+        <td class="text-left">
+          {{ curso.id }}
+        </td>
+        <td class="text-left">
+          {{ curso.nome }}
+        </td>
+        <td class="text-center">
+          <button
+            type="button"
+            class="btn btn-link p-0 mr-2"
+            title="Editar"
+            (click)="editar(curso.id)"
+          >
+            <i class="fas fa-edit text-secondary"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

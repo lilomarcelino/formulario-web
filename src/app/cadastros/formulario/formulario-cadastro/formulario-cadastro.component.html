@@ -1,0 +1,555 @@
+<app-titulo [tituloPagina]="'Cadastro Formulario'"> </app-titulo>
+
+<div class="row" *ngIf="formulario">
+  <div class="col-12">
+    <form name="formularioForm" novalidate #form="ngForm">
+      <div class="row">
+        <app-card
+          [mostrarCabecalho]="true"
+          [textoPadrao]="'Formulario'"
+          class="w-100"
+        >
+          <div class="row">
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+              <div class="form-group">
+                <label
+                  for="nome"
+                  [class.text-danger]="
+                    !iptNome.valid &&
+                    (iptNome.dirty || iptNome.touched || salvando)
+                  "
+                  >Nome</label
+                >
+                <input
+                  type="text"
+                  class="form-control form-control-sm"
+                  name="nome"
+                  id="nome"
+                  [class.is-invalid]="
+                    !iptNome.valid &&
+                    (iptNome.dirty || iptNome.touched || salvando)
+                  "
+                  [(ngModel)]="formulario.nome"
+                  #iptNome="ngModel"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+              <div class="form-group">
+                <label
+                  for="descricao"
+                  [class.text-danger]="
+                    !iptDescricao.valid &&
+                    (iptDescricao.dirty || iptDescricao.touched || salvando)
+                  "
+                  >Descrição</label
+                >
+                <textarea
+                  class="form-control form-control-sm"
+                  name="descricao"
+                  id="descricao"
+                  [class.is-invalid]="
+                    !iptDescricao.valid &&
+                    (iptDescricao.dirty || iptDescricao.touched || salvando)
+                  "
+                  [(ngModel)]="formulario.descricao"
+                  #iptDescricao="ngModel"
+                  rows="4"
+                  required
+                ></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+              <div class="form-group">
+                <label
+                  for="dataInicio"
+                  [class.text-danger]="
+                    !dpInicio.valid &&
+                    (dpInicio.dirty || dpInicio.touched || salvando)
+                  "
+                >
+                  Data Inicio
+                </label>
+                <div class="input-group">
+                  <input
+                    id="dataInicio"
+                    name="dataInicio"
+                    class="form-control form-control-sm"
+                    [class.is-invalid]="
+                      !dpInicio.valid &&
+                      (dpInicio.dirty || dpInicio.touched || salvando)
+                    "
+                    angular-mydatepicker
+                    [(ngModel)]="dataInicioMostrando"
+                    [locale]="utilService.LOCALE_DATEPICKER"
+                    #dp="angular-mydatepicker"
+                    #dpInicio="ngModel"
+                    required
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-sm"
+                      [ngClass]="{
+                        'btn-outline-danger':
+                          !dpInicio.valid &&
+                          (dpInicio.dirty || dpInicio.touched),
+                        'btn-secondary': dpInicio.valid
+                      }"
+                      type="button"
+                      (click)="dp.toggleCalendar()"
+                    >
+                      <i class="fas fa-calendar fa-sm" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+              <div class="form-group">
+                <label
+                  for="dataInicio"
+                  [class.text-danger]="
+                    !dpFim.valid && (dpFim.dirty || dpFim.touched || salvando)
+                  "
+                >
+                  Data Fim
+                </label>
+                <div class="input-group">
+                  <input
+                    id="dataFim"
+                    name="dataFim"
+                    class="form-control form-control-sm"
+                    [class.is-invalid]="
+                      !dpFim.valid && (dpFim.dirty || dpFim.touched || salvando)
+                    "
+                    angular-mydatepicker
+                    [(ngModel)]="dataFimMostrando"
+                    [locale]="utilService.LOCALE_DATEPICKER"
+                    #dp1="angular-mydatepicker"
+                    #dpFim="ngModel"
+                    required
+                  />
+                  <div class="input-group-append">
+                    <button
+                      class="btn btn-sm"
+                      [ngClass]="{
+                        'btn-outline-danger':
+                          !dpFim.valid && (dpFim.dirty || dpFim.touched),
+                        'btn-secondary': dpFim.valid
+                      }"
+                      type="button"
+                      (click)="dp1.toggleCalendar()"
+                    >
+                      <i class="fas fa-calendar fa-sm" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+              <div class="form-group">
+                <label for="ativo">Ativo</label>
+                <div class="btn-group w-100" role="group" aria-label="">
+                  <button
+                    type="button"
+                    class="btn btn-sm text-truncate"
+                    title="Sim"
+                    [class.btn-primary]="formulario.ativo"
+                    [class.btn-secondary]="!formulario.ativo"
+                    type="button"
+                    (click)="formulario.ativo = !formulario.ativo"
+                  >
+                    <i class="fa fa-sm" [class.fa-check]="formulario.ativo"></i>
+                    Sim
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm text-truncate"
+                    title="Não"
+                    [class.btn-primary]="!formulario.ativo"
+                    [class.btn-secondary]="formulario.ativo"
+                    type="button"
+                    (click)="formulario.ativo = !formulario.ativo"
+                  >
+                    <i
+                      class="fa fa-sm"
+                      [class.fa-check]="!formulario.ativo"
+                    ></i>
+                    Não
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </app-card>
+      </div>
+      <div class="row">
+        <app-card
+          [mostrarCabecalho]="true"
+          [textoPadrao]="'Pergunta(s)'"
+          class="w-100"
+        >
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="geral-tab"
+                data-toggle="tab"
+                href="#geral"
+                role="tab"
+                aria-controls="geral"
+                aria-selected="true"
+                >Geral</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                [ngClass]="{ disabled: pergunta.tipo == 'SIMPLES' }"
+                id="alternativa-tab"
+                data-toggle="tab"
+                href="#alternativa"
+                role="tab"
+                aria-controls="alternativa"
+                aria-selected="false"
+                >Alternativas</a
+              >
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div
+              class="tab-pane fade show active"
+              id="geral"
+              role="tabpanel"
+              aria-labelledby="geral-tab"
+            >
+              <form
+                name="formularioPerguntaForm"
+                novalidate
+                #formPergunta="ngForm"
+              >
+                <div class="row">
+                  <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="form-group">
+                      <label
+                        for="nomePergunta"
+                        [class.text-danger]="
+                          !iptNomePergunta.valid &&
+                          (iptNomePergunta.dirty ||
+                            iptNomePergunta.touched ||
+                            inserindoPergunta)
+                        "
+                        >Nome</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        name="nomePergunta"
+                        id="nomePergunta"
+                        [class.is-invalid]="
+                          !iptNomePergunta.valid &&
+                          (iptNomePergunta.dirty ||
+                            iptNomePergunta.touched ||
+                            inserindoPergunta)
+                        "
+                        [(ngModel)]="pergunta.nome"
+                        #iptNomePergunta="ngModel"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="form-group">
+                      <label
+                        for="descricaoPergunta"
+                        [class.text-danger]="
+                          !iptDescricaoPergunta.valid &&
+                          (iptDescricaoPergunta.dirty ||
+                            iptDescricaoPergunta.touched ||
+                            inserindoPergunta)
+                        "
+                        >Descrição</label
+                      >
+                      <textarea
+                        class="form-control form-control-sm"
+                        name="descricaoPergunta"
+                        id="descricaoPergunta"
+                        [class.is-invalid]="
+                          !iptDescricaoPergunta.valid &&
+                          (iptDescricaoPergunta.dirty ||
+                            iptDescricaoPergunta.touched ||
+                            inserindoPergunta)
+                        "
+                        [(ngModel)]="pergunta.descricao"
+                        #iptDescricaoPergunta="ngModel"
+                        rows="4"
+                        required
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                    <div class="form-group">
+                      <label for="ativo"
+                        >Tipo Pergunta
+                        {{ this.pergunta.multiplaEscolha }}</label
+                      >
+                      <div class="btn-group w-100" role="group" aria-label="">
+                        <button
+                          type="button"
+                          class="btn btn-sm text-truncate"
+                          title="Simples"
+                          [class.btn-primary]="pergunta.tipo == 'SIMPLES'"
+                          [class.btn-secondary]="pergunta.tipo != 'SIMPLES'"
+                          type="button"
+                          (click)="
+                            pergunta.tipo = 'SIMPLES';
+                            pergunta.multiplaEscolha = false
+                          "
+                        >
+                          <i
+                            class="fa fa-sm"
+                            [class.fa-check]="pergunta.tipo == 'SIMPLES'"
+                          ></i>
+                          Simples
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-sm text-truncate"
+                          title="Não"
+                          [class.btn-primary]="pergunta.tipo == 'MULTIPLA'"
+                          [class.btn-secondary]="pergunta.tipo != 'MULTIPLA'"
+                          type="button"
+                          (click)="
+                            pergunta.tipo = 'MULTIPLA';
+                            pergunta.multiplaEscolha = true
+                          "
+                        >
+                          <i
+                            class="fa fa-sm"
+                            [class.fa-check]="pergunta.tipo == 'MULTIPLA'"
+                          ></i>
+                          Múltipla
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                    <div class="form-group">
+                      <button
+                        type="button"
+                        class="btn btn-success btn-sm btn-block"
+                        (click)="adicionarPergunta()"
+                      >
+                        <i class="fa fa-plus" aria-hidden="true"></i> Adicionar
+                        Pergunta
+                      </button>
+                    </div>
+                  </div>
+                  <app-card class="w-100">
+                    <div
+                      class="col-12 col-md-12 col-lg-12 col-xl-12"
+                      *ngIf="temPerguntas()"
+                    >
+                      <table class="table table-striped table-sm">
+                        <thead>
+                          <tr>
+                            <th>Pergunta</th>
+                            <th>Tipo Pergunta</th>
+                            <th>Opções</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let pergunta of formulario.perguntas">
+                            <td>
+                              {{ pergunta.nome }} - {{ pergunta.descricao }}
+                            </td>
+                            <td>{{ pergunta.tipo | titlecase }}</td>
+                            <td>
+                              <button
+                                type="button"
+                                class="btn btn-link text-secondary p-0"
+                                (click)="excluirPergunta(pergunta)"
+                              >
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="row" *ngIf="!temPerguntas()">
+                      <div class="col-12 text-center">
+                        <br /><br />
+                        <p *ngIf="!utilService.carregando">
+                          {{ utilService.retornaMensagemPadrao() }}
+                        </p>
+                        <br /><br />
+                      </div>
+                    </div>
+                  </app-card>
+                </div>
+              </form>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="alternativa"
+              role="tabpanel"
+              aria-labelledby="alternativa-tab"
+            >
+              <form
+                name="formularioAlternativaForm"
+                novalidate
+                #formAlternativa="ngForm"
+              >
+                <div class="row">
+                  <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="form-group">
+                      <label
+                        for="nomeAlternativa"
+                        [class.text-danger]="
+                          !iptNomeAlternativa.valid &&
+                          (iptNomeAlternativa.dirty ||
+                            iptNomeAlternativa.touched ||
+                            inserindoAlternativa)
+                        "
+                        >Nome</label
+                      >
+                      <input
+                        type="text"
+                        class="form-control form-control-sm"
+                        name="nomeAlternativa"
+                        id="nomeAlternativa"
+                        [class.is-invalid]="
+                          !iptNomeAlternativa.valid &&
+                          (iptNomeAlternativa.dirty ||
+                            iptNomeAlternativa.touched ||
+                            inserindoAlternativa)
+                        "
+                        [(ngModel)]="alternativa.nome"
+                        #iptNomeAlternativa="ngModel"
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="form-group">
+                      <label
+                        for="descricaoAlternativa"
+                        [class.text-danger]="
+                          !iptDescricaoAlternativa.valid &&
+                          (iptDescricaoAlternativa.dirty ||
+                            iptDescricaoAlternativa.touched ||
+                            inserindoAlternativa)
+                        "
+                        >Descrição</label
+                      >
+                      <textarea
+                        class="form-control form-control-sm"
+                        name="descricaoAlternativa"
+                        id="descricaoAlternativa"
+                        [class.is-invalid]="
+                          !iptDescricaoAlternativa.valid &&
+                          (iptDescricaoAlternativa.dirty ||
+                            iptDescricaoAlternativa.touched ||
+                            inserindoAlternativa)
+                        "
+                        [(ngModel)]="alternativa.descricao"
+                        #iptDescricaoAlternativa="ngModel"
+                        rows="4"
+                        required
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <div class="row">
+                <div class="col-12 col-md-3 col-lg-3 col-xl-3">
+                  <div class="form-group">
+                    <button
+                      type="button"
+                      class="btn btn-secondary btn-sm btn-block"
+                      (click)="adicionarAlternativa(pergunta)"
+                    >
+                      <i class="fa fa-plus" aria-hidden="true"></i>
+                      Adicionar Alternativa
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <app-card class="w-100">
+                  <div
+                    class="col-12 col-md-12 col-lg-12 col-xl-12"
+                    *ngIf="temAlternativas()"
+                  >
+                    <table class="table table-striped table-sm">
+                      <thead>
+                        <tr>
+                          <th>Alternativa</th>
+                          <th>Opções</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let alternativa of pergunta.alternativas">
+                          <td>
+                            {{ alternativa.nome }} -
+                            {{ alternativa.descricao }}
+                          </td>
+                          <td>
+                            <button
+                              type="button"
+                              class="btn btn-link text-secondary p-0"
+                              (click)="excluirAlternativa(alternativa)"
+                            >
+                              <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <div class="row" *ngIf="!temAlternativas()">
+                    <div class="col-12 text-center">
+                      <br /><br />
+                      <p *ngIf="!utilService.carregando">
+                        {{ utilService.retornaMensagemPadrao() }}
+                      </p>
+                      <br /><br />
+                    </div>
+                  </div>
+                </app-card>
+              </div>
+            </div>
+          </div>
+        </app-card>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 col-md-2 col-lg-2 col-xl-2">
+    <div class="form-group">
+      <button
+        type="button"
+        class="btn btn-sm btn-block btn-success"
+        (click)="salvar()"
+      >
+        <i class="fas fa-save" aria-hidden="true"></i> Salvar
+      </button>
+    </div>
+  </div>
+</div>
